@@ -15,9 +15,9 @@ class AppTextField extends StatelessWidget {
   final VoidCallback? onTap;
   final int maxLines;
   final double? width;
-  double? height = 40;
+  final double height;
 
-  AppTextField({
+  const AppTextField({
     super.key,
     required this.label,
     this.hint,
@@ -47,31 +47,48 @@ class AppTextField extends StatelessWidget {
     } else if (breakpoint.isTablet) {
       fieldWidth = 400;
     } else {
-      fieldWidth = 450; // Desktop POS size
+      fieldWidth = 450;
     }
 
     return Align(
       alignment: Alignment.centerLeft,
       child: ConstrainedBox(
         constraints: BoxConstraints(maxWidth: fieldWidth),
-        child: SizedBox(
-          height: height ?? 55,
-          child: TextFormField(
-            controller: controller,
-            keyboardType: keyboardType,
-            obscureText: obscureText,
-            validator: validator,
-            readOnly: readOnly,
-            onTap: onTap,
-            maxLines: maxLines,
-            style: const TextStyle(color: AppColors.textPrimary, fontSize: 14),
-            decoration: InputDecoration(
-              labelText: label,
-              hintText: hint,
-              prefixIcon: prefixIcon,
-              suffixIcon: suffixIcon,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: height,
+              child: TextFormField(
+                controller: controller,
+                keyboardType: keyboardType,
+                obscureText: obscureText,
+                validator: validator,
+                readOnly: readOnly,
+                onTap: onTap,
+                maxLines: maxLines,
+                style: const TextStyle(
+                  color: AppColors.textPrimary,
+                  fontSize: 14,
+                ),
+
+                decoration: InputDecoration(
+                  labelText: label,
+                  hintText: hint,
+                  prefixIcon: prefixIcon,
+                  suffixIcon: suffixIcon,
+
+                  // 🔥 Important: Prevents height jump
+                  errorStyle: const TextStyle(height: 0, fontSize: 0),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 10,
+                  ),
+                ),
+              ),
             ),
-          ),
+            const SizedBox(height: 18),
+          ],
         ),
       ),
     );
